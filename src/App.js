@@ -18,7 +18,7 @@ export class App extends Component {
     }));
   }
 
-  deleteContact = (id) =>{
+  deleteContact = (id) => {
     this.setState({
       contactsForm: [...this.state.contactsForm.filter((contact) => contact.id !==id)]
     })

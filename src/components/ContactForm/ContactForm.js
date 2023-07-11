@@ -15,20 +15,44 @@ onInputChange = (event) => {
   })
 }
 
+// проверка с оператором || для того,
+// чтобы при нажатии на save с пустой строкой
+//  не появлялся пустой контакт, но чтобы предыдущие контакт 
+//  отправился на localStorage или при удалении контакта из списка
+// данные в localStorage обновились и 
+// удаленный контакт удалился из хранилища
+
+
 onFormSubmit = (event) => {
   event.preventDefault()
-  this.props.onSubmit({
-    firstName: this.state.firstName,
-    lastName: this.state.lastName,
-    email: this.state.email,
-    phone:this.state.phone
-  })
+  if(this.state.firstName !== '' || 
+  this.state.lastName !== '' || 
+  this.state.email !== '' || 
+  this.state.phone !== '' 
+  ){
+    this.props.onSubmit({
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
+      email: this.state.email,
+      phone:this.state.phone
+    })
+  }
+  
+}
+onCreateNewForm = (event) => {
+  event.preventDefault()
   this.setState({
     firstName: '',
     lastName: '',
     email: '',
     phone: ''
   });
+}
+
+onclearInputInfo = (fieldName) => {
+  this.setState({
+    [fieldName]: ''
+  })
 }
 
   render() {
@@ -44,6 +68,7 @@ onFormSubmit = (event) => {
     onChange = {this.onInputChange}
     />
     <button 
+    onClick = {() => this.onclearInputInfo('firstName')}
     type ='button'
     className='input-delete'>
       X</button>
@@ -58,6 +83,7 @@ onFormSubmit = (event) => {
     onChange = {this.onInputChange}
     />
     <button 
+     onClick = {() => this.onclearInputInfo('lastName')}
     type ='button'
     className='input-delete'>
       X</button>
@@ -72,6 +98,7 @@ onFormSubmit = (event) => {
     onChange = {this.onInputChange}
     />
     <button 
+     onClick = {() => this.onclearInputInfo('email')}
     type ='button'
     className='input-delete'>
       X</button>
@@ -86,26 +113,28 @@ onFormSubmit = (event) => {
     onChange = {this.onInputChange}
     />
     <button
+     onClick = {() => this.onclearInputInfo('phone')}
     type ='button' 
     className='input-delete'>
-    
       X</button>
       </div>
+
       <button 
-   type='submit'
-  className='new'>New</button>
-  </form>
-  <button 
-    type ='button'
+    type ='submit'
     className='save'
     onClick={this.props.onSave}
     >Save</button>
-  <button 
+
+ <button 
   type ='button'
   className='delete'>Delete</button>
-      </>
-  
+  </form>
 
+  <button 
+  onClick={this.onCreateNewForm}
+   type='button'
+  className='new'>New</button>
+      </>
     )
   }
 }
