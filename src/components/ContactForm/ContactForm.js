@@ -3,11 +3,16 @@ import './ContactForm.css'
 
 export class ContactForm extends Component {
   state = {
-    firstName: '',
+  ...this.props.contactsForEdit,
+};
+
+createNewForm = () => {
+ this.setState(
+  { firstName: '',
     lastName: '',
     email: '',
-    phone:''
-};
+    phone: '',
+})}
 
 onInputChange = (event) => {
   this.setState({
@@ -18,27 +23,23 @@ onInputChange = (event) => {
 onFormSubmit = (event) => {
   event.preventDefault()
     this.props.onSubmit({
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
-      email: this.state.email,
-      phone:this.state.phone
+     ...this.state,
     })
 }
 
-onCreateNewForm = (event) => {
-  event.preventDefault()
+onclearInputInfo = (e) => {
+  const sibling = e.target.parentNode.firstChild;
   this.setState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    id: ''
-  });
+    [sibling.name]: '',
+  })
 }
 
-onclearInputInfo = (fieldName) => {
+
+onContactDelete = (event) => {
+  event.stopPropagation();
+  this.props.onDelete(this.props.contactsForEdit.id); 
   this.setState({
-    [fieldName]: ''
+    ...this.createNewForm(),
   })
 }
 
@@ -46,17 +47,17 @@ onclearInputInfo = (fieldName) => {
     return (
       <>
       <form className='form' onSubmit={this.onFormSubmit}>
-    <div className='form-item-container'>
-    <input className='input-item'
-    type = 'text'
-    name = 'firstName'
-    required={true}
-    value = {this.state.firstName}
-    placeholder="Enter your name"
-    onChange = {this.onInputChange}
+        <div className='form-item-container'>
+          <input className='input-item'
+            type = 'text'
+            name = 'firstName'
+            required={true}
+            value = {this.state.firstName}
+            placeholder="Enter your name"
+            onChange = {this.onInputChange}
     />
     <button 
-    onClick = {() => this.onclearInputInfo('firstName')}
+    onClick = {this.onclearInputInfo}
     type ='button'
     className='input-delete'>
       X</button>
@@ -64,30 +65,30 @@ onclearInputInfo = (fieldName) => {
 
       <div className='form-item-container'>
       <input className='input-item'
-    type = 'text'
-    name = 'lastName'
-    required={true}
-    value = {this.state.lastName}
-    placeholder="Enter your surname"
-    onChange = {this.onInputChange}
+              type = 'text'
+              name = 'lastName'
+              required={true}
+              value = {this.state.lastName}
+              placeholder="Enter your surname"
+              onChange = {this.onInputChange}
     />
-    <button 
-     onClick = {() => this.onclearInputInfo('lastName')}
-    type ='button'
-    className='input-delete'>
+      <button 
+          onClick = {this.onclearInputInfo}
+          type ='button'
+          className='input-delete'>
       X</button>
       </div>
 
       <div className='form-item-container'>
       <input className='input-item'
-    type = 'email'
-    name = 'email'
-    value = {this.state.email}
-    placeholder="Enter your email"
-    onChange = {this.onInputChange}
+                type = 'email'
+                name = 'email'
+                value = {this.state.email}
+                placeholder="Enter your email"
+                onChange = {this.onInputChange}
     />
     <button 
-     onClick = {() => this.onclearInputInfo('email')}
+     onClick = {this.onclearInputInfo}
     type ='button'
     className='input-delete'>
       X</button>
@@ -95,33 +96,35 @@ onclearInputInfo = (fieldName) => {
    
       <div className='form-item-container'>
       <input className='input-item'
-    type = 'tel'
-    name = 'phone'
-    required={true}
-    value = {this.state.phone}
-    placeholder="Enter phone number"
-    onChange = {this.onInputChange}
+                type = 'text'
+                name = 'phone'
+                required={true}
+                value = {this.state.phone}
+                placeholder="Enter phone number"
+                onChange = {this.onInputChange}
     />
     <button
-     onClick = {() => this.onclearInputInfo('phone')}
-    type ='button' 
-    className='input-delete'>
+          onClick = {this.onclearInputInfo}
+          type ='button' 
+          className='input-delete'>
       X</button>
       </div>
 
       <button 
     type ='submit'
     className='save'
-    onClick={this.props.onSave}
+    onClick={this.onSubmit}
     >Save</button>
 
  <button 
   type ='button'
-  className='delete'>Delete</button>
+  className='delete'
+  onClick={this.onContactDelete}
+  >Delete</button>
   </form>
 
   <button 
-  onClick={this.onCreateNewForm}
+  onClick={this.createNewForm}
    type='button'
   className='new'>New</button>
       </>

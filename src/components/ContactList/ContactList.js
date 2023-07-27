@@ -13,7 +13,7 @@ export class ContactList extends Component {
       key = {contact.id}
       contact = {contact}
       onDelete = {this.props.onDelete}
-     
+      onEdit={this.props.onEditContact}
       />
         )
       })}

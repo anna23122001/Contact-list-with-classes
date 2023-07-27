@@ -13,6 +13,7 @@ export class App extends Component {
 
   createEmptyContact(){
     return {
+      id:'',
       firstName: '',
       lastName: '',
       email: '',
@@ -20,11 +21,24 @@ export class App extends Component {
     }
   }  
 
-  addContact = (newContact) => {
-    newContact.id = nanoid();
-    this.setState((lastState) => ({
-      contactsForm: [...lastState.contactsForm, newContact]
-    }));
+  componentDidMount(){
+    const fromLocalStorage = JSON.parse(
+      localStorage.getItem(
+        'contacts')
+    )
+    if(!fromLocalStorage){
+      this.setState({
+        contactsForm: [],
+      })
+    }else{
+      this.setState({
+        contactsForm: [...fromLocalStorage]
+      })
+    }
+  }
+
+  componentDidUpdate() {
+    localStorage.setItem('contacts', JSON.stringify(this.state.contactsForm))
   }
 
   deleteContact = (id) => {
@@ -33,35 +47,38 @@ export class App extends Component {
     })
   }
 
-saveContact = () => {
-  localStorage.setItem('contacts', JSON.stringify(this.state.contactsForm))
+createContact(contact) {
+  contact.id = nanoid();
+  this.setState({
+    contactsForm: [...this.state.contactsForm, contact],
+    contactsForEdit: this.createEmptyContact(),
+  });
 }
 
-// showContact = (id) => {
-//   if(id !== this.contactsForm.id){
-//     return this.contactsForm
-//   }
-//  return localStorage.getItem('contacts', JSON.parse(this.state.contactsForm))
-// }
+updateContact(contact) {
+  this.setState((state) => {
+    const contactsForm = state.contactsForm.map((item) =>
+    item.id === contact.id ? contact : item
+    );
+    return {
+      contactsForm,
+      contactForEdit: contact,
+    }
+  })
+}
 
-componentDidMount(){
-  const fromLocalStorage = JSON.parse(
-    localStorage.getItem(
-      'contacts')
-  )
-  if(!fromLocalStorage){
-    this.setState({
-      contactsForm: [],
-    })
+selectContact = (contact) => {
+  this.setState({
+    contactsForEdit: contact,
+  })
+}
+
+saveContact = (contact) => {
+  if (!contact.id) {
+    this.createContact(contact);
   }else{
-    this.setState({
-      contactsForm: [...fromLocalStorage]
-    })
+    this.updateContact(contact)
   }
-}
-
-componentDidUpdate() {
-  localStorage.setItem('contacts', JSON.stringify(this.state.contactsForm))
 }
 
   render() {
@@ -69,13 +86,17 @@ componentDidUpdate() {
       <>
       <h1>Contact List</h1>
       <div className='main-container'>
-      <ContactList 
-      contacts = {this.state.contactsForm}
-      onDelete = {this.deleteContact}/>
-      <ContactForm contacts = {this.state.contactsForm}
-      onSubmit = {this.addContact}
-      onSave = {this.saveContact}
-    
+        <ContactList 
+           contacts = {this.state.contactsForm}
+           onDelete = {this.deleteContact}
+           onEditContact={this.selectContact}
+           />
+        <ContactForm 
+          key={this.state.contactsForEdit.id}
+          contacts = {this.state.contactsForm}
+          contactsForEdit={this.state.contactsForEdit}
+          onSubmit = {this.saveContact}
+          onDelete = {this.deleteContact}
       />
       </div>
       </>
