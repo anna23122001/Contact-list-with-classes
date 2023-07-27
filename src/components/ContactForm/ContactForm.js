@@ -15,37 +15,24 @@ onInputChange = (event) => {
   })
 }
 
-// проверка с оператором || для того,
-// чтобы при нажатии на save с пустой строкой
-//  не появлялся пустой контакт, но чтобы предыдущие контакт 
-//  отправился на localStorage или при удалении контакта из списка
-// данные в localStorage обновились и 
-// удаленный контакт удалился из хранилища
-
-
 onFormSubmit = (event) => {
   event.preventDefault()
-  if(this.state.firstName !== '' || 
-  this.state.lastName !== '' || 
-  this.state.email !== '' || 
-  this.state.phone !== '' 
-  ){
     this.props.onSubmit({
       firstName: this.state.firstName,
       lastName: this.state.lastName,
       email: this.state.email,
       phone:this.state.phone
     })
-  }
-  
 }
+
 onCreateNewForm = (event) => {
   event.preventDefault()
   this.setState({
     firstName: '',
     lastName: '',
     email: '',
-    phone: ''
+    phone: '',
+    id: ''
   });
 }
 
@@ -63,6 +50,7 @@ onclearInputInfo = (fieldName) => {
     <input className='input-item'
     type = 'text'
     name = 'firstName'
+    required={true}
     value = {this.state.firstName}
     placeholder="Enter your name"
     onChange = {this.onInputChange}
@@ -78,6 +66,7 @@ onclearInputInfo = (fieldName) => {
       <input className='input-item'
     type = 'text'
     name = 'lastName'
+    required={true}
     value = {this.state.lastName}
     placeholder="Enter your surname"
     onChange = {this.onInputChange}
@@ -108,6 +97,7 @@ onclearInputInfo = (fieldName) => {
       <input className='input-item'
     type = 'tel'
     name = 'phone'
+    required={true}
     value = {this.state.phone}
     placeholder="Enter phone number"
     onChange = {this.onInputChange}

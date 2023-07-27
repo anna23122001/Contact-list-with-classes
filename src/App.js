@@ -7,9 +7,18 @@ import './App.css'
 
 export class App extends Component {
   state = {
-    contactsForm: [
-    ]
-  }
+    contactsForm: [],
+    contactsForEdit: this.createEmptyContact(),
+  };
+
+  createEmptyContact(){
+    return {
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone:'',
+    }
+  }  
 
   addContact = (newContact) => {
     newContact.id = nanoid();
@@ -28,22 +37,31 @@ saveContact = () => {
   localStorage.setItem('contacts', JSON.stringify(this.state.contactsForm))
 }
 
+// showContact = (id) => {
+//   if(id !== this.contactsForm.id){
+//     return this.contactsForm
+//   }
+//  return localStorage.getItem('contacts', JSON.parse(this.state.contactsForm))
+// }
+
 componentDidMount(){
   const fromLocalStorage = JSON.parse(
     localStorage.getItem(
-      'contacts',
-      JSON.stringify(this.state.contactsForm)
-    )
+      'contacts')
   )
   if(!fromLocalStorage){
     this.setState({
-      contactsForm: this.state.contactsForm
+      contactsForm: [],
     })
   }else{
     this.setState({
       contactsForm: [...fromLocalStorage]
     })
   }
+}
+
+componentDidUpdate() {
+  localStorage.setItem('contacts', JSON.stringify(this.state.contactsForm))
 }
 
   render() {
@@ -57,9 +75,9 @@ componentDidMount(){
       <ContactForm contacts = {this.state.contactsForm}
       onSubmit = {this.addContact}
       onSave = {this.saveContact}
+    
       />
       </div>
-      
       </>
     )
   }
