@@ -11,7 +11,7 @@ export class App extends Component {
     contactsForEdit: this.createEmptyContact(),
   };
 
-  createEmptyContact(){
+  createEmptyContact() {
     return {
       id:'',
       firstName: '',
@@ -23,7 +23,7 @@ export class App extends Component {
 
   addNewContact = () => {
     this.setState({
-      contactForEdit: this.createEmptyContact()
+      contactsForEdit: this.createEmptyContact()
  })
 }
 
@@ -49,7 +49,7 @@ export class App extends Component {
       this.saveState(contactsForm);
       return {
         contactsForm,
-        contactForEdit: [],
+        contactsForEdit: this.createEmptyContact(),
       }
     })
   }
@@ -61,7 +61,7 @@ export class App extends Component {
        this.saveState(contactsForm);
       return {
         contactsForm,
-        contactForEdit: this.createEmptyContact(),
+        contactsForEdit: contact,
       }
   });
 }
@@ -74,7 +74,7 @@ export class App extends Component {
       this.saveState(contactsForm);
   return {
       contactsForm,
-      contactForEdit: contact,
+      contactsForEdit: contact,
     }
   })
 }
@@ -109,7 +109,6 @@ saveContact = (contact) => {
           contactsForEdit={this.state.contactsForEdit}
           onSubmit = {this.saveContact}
           onDelete = {this.deleteContact}
-
       />
       </div>
       </>

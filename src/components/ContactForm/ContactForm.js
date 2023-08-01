@@ -2,18 +2,19 @@ import React, { Component } from 'react'
 import './ContactForm.css'
 
 export class ContactForm extends Component {
-  state = {
-  ...this.props.contactsForEdit,
-};
 
-createNewForm = () => {
-  this.setState({
+  state = {
+    ...this.props.contactsForEdit,
+  };
+  
+  createNewForm() {
+  return {
     firstName: '',
     lastName: '',
     email: '',
     phone: '',
-  });
-};
+    }
+  };
 
 onInputChange = (event) => {
   this.setState({
@@ -35,14 +36,12 @@ onclearInputInfo = (e) => {
   })
 }
 
-onContactDelete = (event) => {
-  event.stopPropagation();
+onContactDelete = () => {
   this.props.onDelete(this.props.contactsForEdit.id); 
   this.setState({
     ...this.createNewForm(),
   })
 }
-
 
   render() {
     return (
@@ -57,11 +56,10 @@ onContactDelete = (event) => {
             placeholder="Enter your name"
             onChange = {this.onInputChange}
     />
-    <button 
+    <span
     onClick = {this.onclearInputInfo}
-    type ='button'
     className='input-delete'>
-      X</button>
+      X</span>
     </div>
 
       <div className='form-item-container'>
@@ -73,11 +71,10 @@ onContactDelete = (event) => {
               placeholder="Enter your surname"
               onChange = {this.onInputChange}
     />
-      <button 
+      <span 
           onClick = {this.onclearInputInfo}
-          type ='button'
           className='input-delete'>
-      X</button>
+      X</span>
       </div>
 
       <div className='form-item-container'>
@@ -88,11 +85,10 @@ onContactDelete = (event) => {
                 placeholder="Enter your email"
                 onChange = {this.onInputChange}
     />
-    <button 
+    <span 
      onClick = {this.onclearInputInfo}
-    type ='button'
     className='input-delete'>
-      X</button>
+      X</span>
       </div>
    
       <div className='form-item-container'>
@@ -104,26 +100,29 @@ onContactDelete = (event) => {
                 placeholder="Enter phone number"
                 onChange = {this.onInputChange}
     />
-    <button
+    <span
           onClick = {this.onclearInputInfo}
-          type ='button' 
           className='input-delete'>
-      X</button>
+      X</span>
       </div>
 
       <button 
-    type ='submit'
-    className='save'
-    onClick={this.onSubmit}
-    >Save</button>
-
- <button 
-  type ='button'
-  className='delete'
-  onClick={this.onContactDelete}
-  >Delete</button>
+            type='submit'
+            className='save'
+          >Save
+          </button>
+          {this.state.id ? (
+            <button 
+              type ='button'
+              className='delete'
+              onClick={this.onContactDelete}
+            >
+              Delete
+            </button>
+          ) : (
+              ''
+            )}
   </form>
-
       </>
     )
   }
