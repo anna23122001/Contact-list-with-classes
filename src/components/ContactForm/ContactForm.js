@@ -7,12 +7,13 @@ export class ContactForm extends Component {
 };
 
 createNewForm = () => {
- this.setState(
-  { firstName: '',
+  this.setState({
+    firstName: '',
     lastName: '',
     email: '',
     phone: '',
-})}
+  });
+};
 
 onInputChange = (event) => {
   this.setState({
@@ -34,7 +35,6 @@ onclearInputInfo = (e) => {
   })
 }
 
-
 onContactDelete = (event) => {
   event.stopPropagation();
   this.props.onDelete(this.props.contactsForEdit.id); 
@@ -42,6 +42,7 @@ onContactDelete = (event) => {
     ...this.createNewForm(),
   })
 }
+
 
   render() {
     return (
@@ -123,10 +124,6 @@ onContactDelete = (event) => {
   >Delete</button>
   </form>
 
-  <button 
-  onClick={this.createNewForm}
-   type='button'
-  className='new'>New</button>
       </>
     )
   }

@@ -3,13 +3,11 @@ import './ListItem.css'
 
 export class ListItem extends Component {
 
-  onContactDelete = (event) => {
-    event.stopPropagation();
+  onContactDelete = () => {
     this.props.onDelete(this.props.contact.id)
   }
 
-  onContactEdit = (event) => {
-    event.stopPropagation();
+  onContactEdit = () => {
     this.props.onEdit(this.props.contact)
   }
 

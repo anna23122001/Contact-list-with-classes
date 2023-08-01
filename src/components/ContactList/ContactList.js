@@ -16,7 +16,10 @@ export class ContactList extends Component {
       onEdit={this.props.onEditContact}
       />
         )
-      })}
+    })}
+          <button 
+  onClick={this.props.onAddContact}
+  className='new'>New</button>
       </div>
         </>
      
